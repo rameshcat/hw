@@ -1,6 +1,8 @@
 <?php
+/*Необходимо переделать функцию так, чтобы использовать обычную переменную
+вместо статической и не использовать ссылку.*/
 
-function test($count)
+function test($count=0)
 {
     $count++;
     echo $count.'';
@@ -9,7 +11,12 @@ function test($count)
         test($count);
     }
 }
-//test(0);
+//test();
+
+/*Написать функцию (рекурсивную либо обычную - по желанию),
+которая принимает на вход параметр (например, $n)
+ и вычисляет число Фибоначчи до предела $n.
+Результат вычисления возвращается этой же функцией*/
 
 function fibonachi($number)
 {
@@ -22,51 +29,62 @@ function fibonachi($number)
         $first = $second;
         $second = $result;
         $result = $first+$second;
-        //echo $second.' ';
         fibonachi($number);
     }
     return $second;
 }
 //echo fibonachi(100);
 
+/*Напишите рекурсивную функцию, принимающую на вход натуральное число $n.
+Функция возвращает строку из всех чисел от 1 до $n либо от $n до 1.
+За порядок сортировки должен отвечать дополнительный параметр функции - $order,
+который может принимать значение ‘desc’ (убывающий) или ‘asc’ (возрастающий)
+и по-умолчанию должен быть равен ‘desc’.*/
+
 function numbers($number,$order = 'desc')
 {
     static $start = 1;
-    $sortorder = $order;
 
     switch ($order) {
         case $order == 'asc':
             if ($start <= $number) {
                 echo $start.' ';
                 $start++;
-                numbers($number,$sortorder);
+                numbers($number,$order);
             }
             break;
         case $order == 'desc':
             if ($start <= $number) {
                 echo $number.' ';
                 $number--;
-                numbers($number,$sortorder);
+                numbers($number,$order);
             }
             break;
     }
 }
 //numbers(10,'asc');
 
+/*Напишите функцию, которая подсчитывает количество всех значений массива.
+Функция должна учитывать вложенность массивов.
+(функцией array_count_values пользоваться нельзя).*/
+
 function arrayCount($array)
 {
-    static $result = 0;
+    $result = 0;
     for ($i=0;$i<count($array);$i++) {
         if ((!is_array($array[$i])) && (isset($array[$i]))) {
             $result++;
         } else {
-            arrayCount($array[$i]);
+            $result+=arrayCount($array[$i]);
         }
     } return $result;
-
 }
-/*$arr = [[1,1],1,1,1,1,1,1,[1,1,1]];
-echo arrayCount($arr);*/
+//$arr = [1,[1,2,3,4,5],1,1,1,[1,1,1]];
+//echo arrayCount($arr);
+
+/*Дана строка. Вывести первые три символа и последние три символа,
+если длина строки больше 5. Иначе вывести первый символ столько раз,
+какова длина строки.*/
 
 function stringAnalise($string)
 {
@@ -76,6 +94,11 @@ function stringAnalise($string)
     return $result;
 }
 //echo stringAnalise('asghj');
+
+/*Дана строка. Разделить строку на фрагменты по три подряд идущих символа.
+В каждом фрагменте средний символ заменить на случайный символ,
+не совпадающий ни с одним из символов этого фрагмента.
+Показать фрагменты, упорядоченные по алфавиту*/
 
 function stringFormat($string)
 {
@@ -102,6 +125,11 @@ function stringFormat($string)
 }
 //echo stringFormat('asdcwebxcas');
 
+/*Написать генерацию строк длиной 10 символов:
+первые 4 символа - цифры,
+следующие два символы - различные буквы,
+следующие 4 символа - нули или единицы.*/
+
 function generator()
 {
     $string='';
@@ -114,4 +142,4 @@ function generator()
     $string .= str_repeat(rand(0,1),4);
     return $string;
 }
-echo generator();
+//echo generator();
